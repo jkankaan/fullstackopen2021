@@ -30,27 +30,27 @@ const Header = (props) => {
 
 const Content = (props) => {
   return (
-    <p>
+    <div>
     <Part part = {props.part1} exercises = {props.exercises1}></Part>
     <Part part = {props.part2} exercises = {props.exercises2}></Part>
     <Part part = {props.part3} exercises = {props.exercises3}></Part>
-    </p>
+    </div>
   )
 }
 
 const Total = (props) => {
   return (
-    <p>
+    <div>
       Number of exercises {props.exercises1 + props.exercises2 + props.exercises3}
-    </p>
+    </div>
   )
 }
 
 const Part = (props) => {
   return (
-    <p>
+    <div>
       {props.part} {props.exercises}
-    </p>
+    </div>
   )
 }
 
