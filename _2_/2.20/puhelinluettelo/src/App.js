@@ -5,6 +5,7 @@ import Persons from './components/Persons'
 import personService from './services/persons'
 
 const App = () => {
+
   const [ persons, setPersons] = useState([])
 
   const [ newName, setNewName ] = useState('')
@@ -13,7 +14,7 @@ const App = () => {
 
   const [ newFilter, setNewFilter ] = useState('')
 
-  const [ message, setMessage] = useState(null)
+  const [ message, setMessage] = useState({msg:null,type:null})
 
   useEffect(() => {
     personService
@@ -40,12 +41,19 @@ const App = () => {
             setPersons(persons.map(person => person.id !== id ? person : response.data))
             setNewName('')
             setNewNumber('')
-            setMessage(`Phone number replaced`)
+            setMessage({msg:`Phone number replaced`, note:'notification'})
             setTimeout(() => {
-              setMessage(null)
+              setMessage({msg:null,type:null})
+            },2000)})
+          .catch(error => {
+            setMessage({msg:`Information of ${newName} has already been removed from server`, type:'error'})
+            setPersons(persons.filter(person => person.id !== id))
+            setTimeout(() => {
+              setMessage({msg:null, type:null})
             },2000)
+          })
             
-      })}}
+      }}
   
     
     else {
@@ -55,9 +63,9 @@ const App = () => {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
-          setMessage(`Added ${newName}`)
+          setMessage({msg:`Added ${newName}`, type:'notification'})
           setTimeout(() => {
-            setMessage(null)
+            setMessage({msg:null, type:null})
           },2000)
     }) 
     }
@@ -89,20 +97,19 @@ const App = () => {
           .then(response => {
             setPersons(persons.filter(person => person.id !== id))
             })
-            setMessage(`Deleted ${name}`)
+            setMessage({msg:`Deleted ${name}`, type:'notification'})
             setTimeout(() => {
-              setMessage(null)
+              setMessage({msg:null, type:null})
             },2000)
           
       }
     }
 
-    const Notification = ({message}) => {
-      const notificationStyle = {
-        color: 'green',
+    const Notification = (props) => {
+      const notificationStyle = 
+      {
         fontStyle: 'arial',
         fontSize: 25,
-        border: '3px solid green',
         borderRadius: '5px',
         backgroundColor: 'lightgrey',
         height: '50px',
@@ -111,12 +118,15 @@ const App = () => {
         padding: '10px'
       }
 
-      if (message === null) {
+      props.message['type']==='error' ? notificationStyle.color = 'red' : notificationStyle.color = 'green'
+      props.message['type']==='error' ? notificationStyle.border = '3px solid red' : notificationStyle.border = '3px solid green'
+
+      if (props.message['msg'] === null) {
         return null
       }
       return (
         <div style={notificationStyle}>
-          {message}
+          {props.message['msg']}
         </div>
       )
     }
