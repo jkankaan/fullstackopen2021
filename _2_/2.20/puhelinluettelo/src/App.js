@@ -67,7 +67,16 @@ const App = () => {
           setTimeout(() => {
             setMessage({msg:null, type:null})
           },2000)
-    }) 
+        })
+        .catch(error => {
+          var text = error.response.data
+          text = text.error
+          setMessage({msg:`${text}`, type:'error'})
+          setTimeout(() => {
+            setMessage({msg:null, type:null})
+          },2000)
+          })
+        
     }
   }
 
@@ -109,12 +118,12 @@ const App = () => {
       const notificationStyle = 
       {
         fontStyle: 'arial',
-        fontSize: 25,
+        fontSize: 20,
         borderRadius: '5px',
         backgroundColor: 'lightgrey',
-        height: '50px',
+        height: '40px',
         fontWeight: 'bold',
-        lineHeight: '50px',   
+        lineHeight: '40px',   
         padding: '10px'
       }
 
