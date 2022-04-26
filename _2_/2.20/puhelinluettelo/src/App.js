@@ -38,14 +38,6 @@ const App = () => {
         personService
           .modify(id, nameAndNumberObject)
           .then(response => {
-            if (response.data === null) {
-              setMessage({msg:`Information of ${newName} has already been removed from server`, type:'error'})
-              setPersons(persons.filter(person => person.id !== id))
-              setTimeout(() => {
-              setMessage({msg:null, type:null})
-            },2000)
-              return
-            }
             setPersons(persons.map(person => person.id !== id ? person : response.data))
             setNewName('')
             setNewNumber('')
